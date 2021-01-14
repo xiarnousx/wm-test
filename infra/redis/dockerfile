@@ -1,0 +1,5 @@
+FROM redis:5.0.10-alpine
+
+EXPOSE 6379
+
+CMD ["redis-server", "--bind", "redis", "--port", "6379"]

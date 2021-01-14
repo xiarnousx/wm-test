@@ -1,0 +1,17 @@
+FROM node:14-alpine3.12
+
+WORKDIR /ui
+
+ENV PATH /app/node_modules/.bin:$PATH
+
+COPY ./ui/package*.json /ui/
+
+RUN npm install
+RUN npm install react-scripts
+
+
+COPY ./ui/ /ui/
+
+EXPOSE 80
+
+CMD ["npm", "start"]

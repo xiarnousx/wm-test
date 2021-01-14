@@ -1,0 +1,13 @@
+FROM node:14-alpine3.12
+
+# CREATE DIRECTORY INSIDE CONTAINER. AND SET IT AS DEFAULT DIR.
+WORKDIR /geodistancer
+
+COPY ./geodistancer/package*.json ./
+
+RUN npm install
+
+
+EXPOSE 8181
+
+CMD ["npm", "start"]

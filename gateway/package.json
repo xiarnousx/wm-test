@@ -1,0 +1,33 @@
+{
+  "name": "gateway",
+  "version": "1.0.0",
+  "description": "GraphQL Gateway",
+  "main": "bin/wwww.js",
+  "bin": {
+    "gateway": "www.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node bin/www.js"
+  },
+  "author": "Ihab Arnous",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.19.1",
+    "apollo-server-express": "^2.19.1",
+    "axios": "^0.21.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express-jwt": "^6.0.0",
+    "graphql": "^15.4.0",
+    "graphql-redis-subscriptions": "^2.3.1",
+    "graphql-subscriptions": "^1.1.0",
+    "http-errors": "^1.8.0",
+    "ioredis": "^4.19.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.6.3",
+    "morgan": "^1.10.0"
+  }
+}

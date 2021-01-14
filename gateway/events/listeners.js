@@ -1,0 +1,5 @@
+const PARTNER_FINDER_MATCHED = 'PARTNER_FINDER_MATCHED';
+
+module.exports = {
+    PARTNER_FINDER_MATCHED 
+};

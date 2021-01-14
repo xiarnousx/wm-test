@@ -1,0 +1,12 @@
+FROM node:14-alpine3.12
+
+WORKDIR /locations
+
+COPY ./locations/package*.json ./
+
+RUN npm install
+
+
+EXPOSE 8282
+
+CMD ["npm", "start"]

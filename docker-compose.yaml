@@ -1,0 +1,95 @@
+version: "3.7"
+
+services:
+  
+  gateway:
+    container_name: gateway
+    build:
+      context: .
+      dockerfile: ./infra/gateway/dockerfile
+    volumes:
+      - ./gateway:/gateway
+    deploy:
+      replicas: 1
+    ports:
+     - 8000:8000
+    networks: 
+      - backend
+    depends_on: 
+      - redis
+
+  contacts:
+    container_name: contacts
+    build:
+      context: .
+      dockerfile: ./infra/contacts/dockerfile
+    volumes:
+      - ./contacts:/contacts
+      - ./data/contacts:/contacts/data
+    networks: 
+      - backend
+  
+  geodistancer:
+    container_name: geodistancer
+    build:
+      context: .
+      dockerfile: ./infra/geodistancer/dockerfile
+    volumes:
+      - ./geodistancer:/geodistancer
+    networks:
+      - backend
+  
+  locations:
+    container_name: locations
+    build:
+      context: .
+      dockerfile: ./infra/locations/dockerfile
+    volumes:
+      - ./locations:/locations
+      - ./data/location:/locations/data
+    networks: 
+      - backend
+  
+  redis:
+    container_name: redis
+    build:
+      context: .
+      dockerfile: ./infra/redis/dockerfile
+    deploy:
+      replicas: 1
+    networks:
+      - backend
+  
+  auth:
+    container_name: auth
+    image: mongo:3.6-xenial
+    restart: always
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: graphql
+    volumes: 
+      - ./infra/auth/users/users.json:/seed/users.json:ro
+      - ./infra/auth/init.sh:/docker-entrypoint-initdb.d/init.sh:ro
+    networks: 
+      - backend
+    
+  ui:
+    container_name: ui
+    build:
+      context: .
+      dockerfile: ./infra/ui/dockerfile
+    volumes:
+      - ./ui:/ui
+    ports: 
+      - 80:80
+    networks:
+      - frontend
+
+
+networks:
+  backend:
+    driver: bridge
+  
+  frontend:
+    driver: bridge

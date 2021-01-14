@@ -1,0 +1,58 @@
+# Root Types:
+
+type Query {
+    partners: [Partner!]!
+    cities: [City!]!
+    user: User!
+    partnersFinder(input: PartnersFinderInput): FindOperationStatus
+
+}
+
+type Subscription {
+    partnerFinderMatched: [Partner]!
+}
+
+
+# Entities Types:
+
+type FindOperationStatus {
+    status: Boolean!
+}
+
+
+type City {
+    id: ID!
+    city: String!
+    country: String!
+    coordinates: String!
+}
+
+type Partner {
+    id: ID!
+    urlName: String!
+    organization: String!
+    customerLocations: String!
+    willWorkRemotely: Boolean!
+    website: String
+    services: String!
+    offices: [Office!]!
+}
+
+type Office {
+    location: String
+    address: String
+    coordinates: String
+}
+
+type User {
+    id: ID!
+    name: String!
+    username: String!
+}
+
+# Input Definitions:
+
+input PartnersFinderInput {
+    origin: String!
+    distanceWithin: Float!
+}
