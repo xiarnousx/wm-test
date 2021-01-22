@@ -49,6 +49,8 @@ services:
       - ./data/location:/locations/data
     networks: 
       - backend
+    ports:
+      - 8282:8282
   
   redis:
     container_name: redis
