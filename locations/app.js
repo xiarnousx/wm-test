@@ -2,14 +2,13 @@ const createError = require('http-errors');
 const express = require('express');
 const logger = require('morgan');
 const locationsRouter = require('./routes/locations');
-const { ApplicationErrorMiddleware } = require('./middleware');
+const { ApplicationErrorMiddleware, CommonMiddleware } = require('./middleware');
 const { errorWrapper } = require('./utils');
 
 const app = express();
 
-app.use(logger('common'));
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+// Handle common middleware.
+CommonMiddleware(app);
 
 // Main Microservice responsibility to send locations to clients.
 app.use('/locations', locationsRouter);
