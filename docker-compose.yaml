@@ -49,8 +49,26 @@ services:
       - ./data/location:/locations/data
     networks: 
       - backend
+    depends_on: 
+      - locations_db
     ports:
       - 8282:8282
+  
+  locations_db:
+    container_name: locations_db
+    image: mysql:8
+    command: ["--default-authentication-plugin=mysql_native_password", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    env_file: .env
+    environment: 
+      MYSQL_ROOT_PASSWORD: ${LOCATION_MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${LOCATION_MYSQL_DATABASE}
+      MYSQL_USER: ${LOCATION_MYSQL_USER}
+      MYSQL_PASSWORD: ${LOCATION_MYSQL_PASSWORD}
+    volumes:
+      - ./infra/locations_db:/docker-entrypoint-initdb.d:ro
+    networks: 
+      - backend
+
   
   redis:
     container_name: redis

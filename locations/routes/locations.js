@@ -1,10 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const locations = require('../data/cities.json');
-const { AccessDeniedError } = require('../errors');
+const { asyncWrapper } = require('../utils');
+const { LocationService } = require('../services');
 
-router.get('/', (req, res, next) => {
-    res.json(locations);
-});
+const locationService = new LocationService();
+
+router.get('/', asyncWrapper(async (req, res, next) => {
+    const resp =  await locationService.findAll();
+    res.json(resp);
+}));
 
 module.exports = router;
