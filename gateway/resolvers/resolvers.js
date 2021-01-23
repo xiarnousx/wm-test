@@ -2,7 +2,7 @@ require('dotenv').config();
 const axios = require('axios');
 const { RedisPubSub } = require('graphql-redis-subscriptions');
 const  Redis  = require('ioredis');
-const { requireAuth } = require('../utils/auth-verifier');
+const { requireAuth } = require('../utils');
 
 const { PARTNER_FINDER_MATCHED } = require('../events/listeners');
 
