@@ -1,29 +1,26 @@
 const createError = require('http-errors');
 const express = require('express');
-const logger = require('morgan');
-const Redis = require('ioredis');
-const { options } = require('./config/redis');
+const { CommonMiddleware, ApplicationErrorMiddleware } = require('./middleware');
+const { PartnerCalculatedFactory } = require('./services');
+const { globalConfig } = require('./config');
+const { errorWrapper } = require('./utils');
 const contactsRouter = require('./routes/contacts');
 const finderRouter = require('./routes/finder');
-const { PARTNER_FINDER_CALCULATED } = require('./events/listeners');
-const { partnerFinderCalculatedListener } = require('./subscribers/partner-finder-calculated');
 
-const redis = new Redis(options);
 const app = express();
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+// Apply common middleware.
+CommonMiddleware(app);
 
 // Main Microservice responsibility to send contacts to clients.
 app.use('/contacts', contactsRouter);
 app.use('/find', finderRouter);
 
 // Listen to Redis events
-redis.subscribe(PARTNER_FINDER_CALCULATED, (err, count) => {
-    redis.on('message', partnerFinderCalculatedListener);
-});
+PartnerCalculatedFactory.create(globalConfig.typeRedis).subscribe();
 
+// Handle Application wide error
+ApplicationErrorMiddleware(app);
 
 // Forward 404 not found error to handler.
 app.use((req, res, next) => {
@@ -33,7 +30,8 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
     res.status(err.status || 500);
-    res.json({error: err.message});
+    res.json(errorWrapper(err.message, err.status));
 });
+
 
 module.exports = app;
