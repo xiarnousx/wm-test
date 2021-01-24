@@ -8,10 +8,6 @@ const sub = new Redis(redisConfig);
 
 class PartnerFinderCalcRedis extends PartnerFinderCalcService {
 
-    constructor(calculationMethod) {
-        super(calculationMethod);
-    }
-
     listen(channel, message) {
 
         if (channel !== PARTNER_FINDER_RECIEVED) {

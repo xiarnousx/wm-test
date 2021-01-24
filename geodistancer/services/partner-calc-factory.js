@@ -8,9 +8,9 @@ class PartnerCalcFactory {
     static create(type) {
         switch (type) {
             case globalConfig.typeRedis:
-                return new PartnerFinderCalcRedis('default');
+                return new PartnerFinderCalcRedis();
             case globalConfig.typeAMPQ:
-                return new PartnerFinderCalcAMPQ('default');
+                return new PartnerFinderCalcAMPQ();
             default:
                 throw new OperationNotAllowedError(`Not Implemented Type ${type}`);
         }

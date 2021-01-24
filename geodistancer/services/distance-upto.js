@@ -1,5 +1,6 @@
-const { greatCircleDistance } = require('./great-circle-distance');
-const { extractCoordinates } = require('./coordinates-extractor');
+const GreatCircleDistanceFactory = require('../lib/great-circle-distance-factory');
+const { extractCoordinates } = require('../utils/coordinates-extractor');
+const { globalConfig } = require('../config');
 
 function getDistanceUpto(origin, destinations, distanceKM) {
     
@@ -9,20 +10,24 @@ function getDistanceUpto(origin, destinations, distanceKM) {
             .map(dest => {
                     const distances = dest.coordinates.map((coordinate) => {
                         const target = extractCoordinates(coordinate);
-                        const distance = greatCircleDistance({
+                        const options = {
                             lat1: center.lat,
                             lng1: center.lng,
                             lat2: target.lat,
                             lng2: target.lng
-                        });
-                        
+                        };
+
+                        const distance =  GreatCircleDistanceFactory
+                                        .create(globalConfig.greatCircleCalculationMethod, options)
+                                        .calculate();
+                                        
                         return distance;
                     });
                     
                     return {id: dest.id, distances};
                 })
             .map((targets) => {
-                return { id: targets.id, distances: targets.distances.filter((distance) => distance <= distanceKM) };
+                return { id: targets.id, distances: targets.distances.filter((distance) => (distance > 0 && distance <= distanceKM)) };
             })
             .filter((targets) => targets.distances.length > 0)
     };

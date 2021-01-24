@@ -1,10 +1,7 @@
-const { getDistanceUpto } = require('../lib/distance-upto');
+const { getDistanceUpto } = require('./distance-upto');
 
 class PartnerFinderCalcService {
-    constructor(calculationMethod) {
-        this.calculationMethod = calculationMethod;
-    }
-
+    
     deduce(origin, partners, distanceWithin) {
         return getDistanceUpto(origin, partners, distanceWithin);
     }
